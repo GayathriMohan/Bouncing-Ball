@@ -8,92 +8,10 @@
 </head>
 
 <body>
-    <canvas width="420px" height="600px" id="element1"></canvas>
-    <canvas width="420px" height="600px" id="element2"></canvas>
-    <canvas width="420px" height="600px" id="element3"></canvas>
-    <script type="text/javascript">
-    var ctx1, ctx2, ctx3, radius = 30,
-        pointY = 40,
-        pointX = 70,
-        vY = 3,
-        vX = 3,
-        canvasWidth = 420,
-        canvasHeight = 600;
-    var image = new Image();
-
-    function init() {
-        image.src = "background.jpg";
-        var canvas1 = document.getElementById("element1");
-        ctx1 = canvas1.getContext("2d");
-        var canvas2 = document.getElementById("element2");
-        ctx2 = canvas2.getContext("2d");
-        var canvas3 = document.getElementById("element3");
-        ctx3 = canvas3.getContext("2d");
-
-    }
-
-    function draw1() {
-        ctx1.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx1.drawImage(image, 0, 0);
-        ctx1.beginPath();
-        ctx1.fillStyle = "white";
-        ctx1.arc(pointX, pointY, radius, 0, Math.PI * 2, false);
-        ctx1.fill();
-        ctx1.closePath();
-    }
-
-    function draw2() {
-        ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx2.drawImage(image, 0, 0);
-        ctx2.beginPath();
-        ctx2.fillStyle = "gold";
-        ctx2.arc(pointX, pointY, radius, 0, Math.PI * 2, false);
-        ctx2.fill();
-        ctx2.closePath();
-    }
-
-    function draw3() {
-        ctx3.clearRect(0, 0, canvasWidth, canvasHeight);
-        ctx3.drawImage(image, 0, 0);
-        ctx3.beginPath();
-        ctx3.fillStyle = "peachpuff";
-        ctx3.arc(pointX, pointY, radius, 0, Math.PI * 2, false);
-        ctx3.fill();
-        ctx3.closePath();
-    }
-    init();
-
-    function calc(){
-    	if (pointY >= canvasHeight - radius || pointY <= radius) {
-            vY = -vY;
-        }
-        if (pointX > canvasWidth - radius || pointX < radius) {
-            vX *= -1;
-        }
-        pointX += vX;
-        pointY += vY;
-    }
-    function animate() {
-        calc();
-        draw1();
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-    function animateset() {
-        calc();
-        draw2();
-        setTimeout(animateset);
-    }
-    animateset();
-
-    // function animateint() {
-    //     calc()
-    //     draw3();
-    //     setInterval(animateint);
-    // }
-    // animateint();
-    </script>
+    <canvas width="420px" height="620px" id="element1"></canvas>
+    <canvas width="420px" height="620px" id="element2"></canvas>
+    <canvas width="420px" height="620px" id="element3"></canvas>
+    <script type="text/javascript" src="animation.js"></script>
 </body>
 
 </html>
