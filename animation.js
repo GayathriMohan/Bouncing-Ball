@@ -3,8 +3,6 @@ var reqY, reqX, TimeY, TimeX, InterY, InterX, MoveReqY, MoveReqX, MoveTimeY, Mov
 reqX = TimeX = InterX = 40;
 reqY = TimeY = InterY = 70;
 MoveReqY = MoveReqX = MoveInterY = MoveInterX = MoveTimeY = MoveTimeX = 3;
-var canvasWidth = 420;
-var canvasHeight = 620;
 
 var image = new Image();
 
@@ -16,15 +14,17 @@ function init() {
     ctx2 = canvas2.getContext("2d");
     var canvas3 = document.getElementById("element3");
     ctx3 = canvas3.getContext("2d");
-    animate(ctx1);
-    animateTimeOut(ctx2);
-    animateInterval(ctx3);
+    animate(canvas1, ctx1);
+    animateTimeOut(canvas2, ctx2);
+    animateInterval(canvas3, ctx3);
 }
 
 //optimse the code
 
-function draw(ball, context, reqX, reqY, TimeX, TimeY, InterX, InterY) {
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+function draw(ball, canvas, context, reqX, reqY, TimeX, TimeY, InterX, InterY) {
+    context.height = canvas.height = window.innerHeight - 28;
+    context.width = canvas.width = window.innerWidth / 3.18;
+    context.clearRect(0, 0, context.width, context.height);
     context.drawImage(image, 0, 0);
     context.beginPath();
     context.fillStyle = "white";
@@ -40,53 +40,53 @@ function draw(ball, context, reqX, reqY, TimeX, TimeY, InterX, InterY) {
 
 init();
 
-function calc(pointX, pointY, ball, context) {
+function calc(pointX, pointY, ball, canvas, context) {
 
     if (ball == 1) {
-        if (pointY + radius >= canvasHeight || pointY <= radius) {
+        if (pointY + radius >= context.height || pointY <= radius) {
             MoveReqY = -MoveReqY;
         }
-        if (pointX + radius > canvasWidth || pointX < radius) {
+        if (pointX + radius > context.width || pointX < radius) {
             MoveReqX = -MoveReqX;
         }
         reqX += MoveReqX;
         reqY += MoveReqY;
     } else if (ball == 2) {
-        if (pointY + radius >= canvasHeight || pointY <= radius) {
+        if (pointY + radius >= context.height || pointY <= radius) {
             MoveTimeY = -MoveTimeY;
         }
-        if (pointX + radius > canvasWidth || pointX < radius) {
+        if (pointX + radius > context.width || pointX < radius) {
             MoveTimeX = -MoveTimeX;
         }
         TimeX += MoveTimeX;
         TimeY += MoveTimeY;
     } else {
-        if (pointY + radius >= canvasHeight || pointY <= radius) {
+        if (pointY + radius >= context.height || pointY <= radius) {
             MoveInterY = -MoveInterY;
         }
-        if (pointX + radius > canvasWidth || pointX < radius) {
+        if (pointX + radius > context.width || pointX < radius) {
             MoveInterX = -MoveInterX;
         }
         InterX += MoveInterX;
         InterY += MoveInterY;
     }
-    draw(ball, context, reqX, reqY, TimeX, TimeY, InterX, InterY);
+    draw(ball, canvas, context, reqX, reqY, TimeX, TimeY, InterX, InterY);
 }
 
-function animate(context) {
+function animate(canvas, context) {
     ball = 1;
-    calc(reqX, reqY, ball, context);
-    requestAnimationFrame(function() { animate(context) });
+    calc(reqX, reqY, ball, canvas, context);
+    requestAnimationFrame(function() { animate(canvas, context) });
 }
 
-function animateTimeOut(context) {
+function animateTimeOut(canvas, context) {
     ball = 2;
-    calc(TimeX, TimeY, ball, context);
-    setTimeout(function() { animateTimeOut(context) }, 100);
+    calc(TimeX, TimeY, ball, canvas, context);
+    setTimeout(function() { animateTimeOut(canvas, context) }, 100);
 }
 
-function animateInterval(context) {
+function animateInterval(canvas, context) {
     ball = 3;
-    calc(InterX, InterY, ball, context)
-    setInterval(function() { animateInterval(context) }, 400);
+    calc(InterX, InterY, ball, canvas, context);
+    setInterval(function() { animateInterval(canvas, context) }, 800);
 }
