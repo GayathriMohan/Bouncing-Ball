@@ -1,15 +1,11 @@
-var ctx1, ctx2, ctx3, radius = 30,
-    reqY = 40,
-    reqX = 70,
-    ball,
-    TimeX = 40,
-    TimeY = 70,
-    MoveTimeY = 3,
-    MoveTimeX = 3,
-    MoveReqY = 3,
-    MoveReqX = 3,
-    canvasWidth = 420,
-    canvasHeight = 620;
+var ctx1, ctx2, ctx3, ball, radius = 30;
+var reqY, reqX, TimeY, TimeX, InterY, InterX, MoveReqY, MoveReqX, MoveTimeY, MoveTimeX, MoveInterX, MoveInterY;
+reqX = TimeX = InterX = 40;
+reqY = TimeY = InterY = 70;
+MoveReqY = MoveReqX = MoveInterY = MoveInterX = MoveTimeY = MoveTimeX = 3;
+var canvasWidth = 420;
+var canvasHeight = 620;
+
 var image = new Image();
 
 function init() {
@@ -20,43 +16,33 @@ function init() {
     ctx2 = canvas2.getContext("2d");
     var canvas3 = document.getElementById("element3");
     ctx3 = canvas3.getContext("2d");
-
+    animate(ctx1);
+    animateTimeOut(ctx2);
+    animateInterval(ctx3);
 }
 
-function draw1() {
-    ctx1.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx1.drawImage(image, 0, 0);
-    ctx1.beginPath();
-    ctx1.fillStyle = "white";
-    ctx1.arc(reqX, reqY, radius, 0, Math.PI * 2, false);
-    ctx1.fill();
-    ctx1.closePath();
+//optimse the code
+
+function draw(ball, context, reqX, reqY, TimeX, TimeY, InterX, InterY) {
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    context.drawImage(image, 0, 0);
+    context.beginPath();
+    context.fillStyle = "white";
+    if (ball == 1)
+        context.arc(reqX, reqY, radius, 0, Math.PI * 2, false);
+    else if (ball == 2)
+        context.arc(TimeX, TimeY, radius, 0, Math.PI * 2, false);
+    else
+        context.arc(InterX, InterY, radius, 0, Math.PI * 2, false);
+    context.fill();
+    context.closePath();
 }
 
-function draw2() {
-    ctx2.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx2.drawImage(image, 0, 0);
-    ctx2.beginPath();
-    ctx2.fillStyle = "gold";
-    ctx2.arc(TimeX, TimeY, radius, 0, Math.PI * 2, false);
-    ctx2.fill();
-    ctx2.closePath();
-}
-
-function draw3() {
-    ctx3.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx3.drawImage(image, 0, 0);
-    ctx3.beginPath();
-    ctx3.fillStyle = "black";
-    ctx3.arc(reqX, reqY, radius, 0, Math.PI * 2, false);
-    ctx3.fill();
-    ctx3.closePath();
-}
 init();
 
-function calc(pointX, pointY, val) {
+function calc(pointX, pointY, ball, context) {
 
-    if (val == 1) {
+    if (ball == 1) {
         if (pointY + radius >= canvasHeight || pointY <= radius) {
             MoveReqY = -MoveReqY;
         }
@@ -65,8 +51,7 @@ function calc(pointX, pointY, val) {
         }
         reqX += MoveReqX;
         reqY += MoveReqY;
-    }
-    if (val == 2) {
+    } else if (ball == 2) {
         if (pointY + radius >= canvasHeight || pointY <= radius) {
             MoveTimeY = -MoveTimeY;
         }
@@ -75,31 +60,33 @@ function calc(pointX, pointY, val) {
         }
         TimeX += MoveTimeX;
         TimeY += MoveTimeY;
+    } else {
+        if (pointY + radius >= canvasHeight || pointY <= radius) {
+            MoveInterY = -MoveInterY;
+        }
+        if (pointX + radius > canvasWidth || pointX < radius) {
+            MoveInterX = -MoveInterX;
+        }
+        InterX += MoveInterX;
+        InterY += MoveInterY;
     }
-
+    draw(ball, context, reqX, reqY, TimeX, TimeY, InterX, InterY);
 }
 
-function animate() {
+function animate(context) {
     ball = 1;
-    calc(reqX, reqY, ball);
-    draw1();
-    requestAnimationFrame(animate);
+    calc(reqX, reqY, ball, context);
+    requestAnimationFrame(function() { animate(context) });
 }
-animate();
 
-function animateset() {
+function animateTimeOut(context) {
     ball = 2;
-    calc(TimeX, TimeY, ball);
-    draw2();
-    setTimeout(animateset, 200);
+    calc(TimeX, TimeY, ball, context);
+    setTimeout(function() { animateTimeOut(context) }, 100);
 }
-animateset();
 
-
-
-// function animateint() {
-//     calc()
-//     draw3();
-//     setInterval(animateint,400);
-// }
-// animateint();
+function animateInterval(context) {
+    ball = 3;
+    calc(InterX, InterY, ball, context)
+    setInterval(function() { animateInterval(context) }, 400);
+}
