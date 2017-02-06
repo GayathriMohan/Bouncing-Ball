@@ -22,8 +22,8 @@ function init() {
 //optimse the code
 
 function draw(ball, canvas, context, reqX, reqY, TimeX, TimeY, InterX, InterY) {
-    context.height = canvas.height = window.innerHeight - 28;
-    context.width = canvas.width = window.innerWidth / 3.18;
+    context.height = canvas.height = window.innerHeight - 80;
+    context.width = canvas.width = window.innerWidth / 3.24;
     context.clearRect(0, 0, context.width, context.height);
     context.drawImage(image, 0, 0);
     context.beginPath();
@@ -82,7 +82,8 @@ function animate(canvas, context) {
 function animateTimeOut(canvas, context) {
     ball = 2;
     calc(TimeX, TimeY, ball, canvas, context);
-    setTimeout(function() { animateTimeOut(canvas, context) }, 100);
+    var timeId = setTimeout(function() { animateTimeOut(canvas, context) }, 100);
+    // clearTimeOut(timeId);
 }
 
 function animateInterval(canvas, context) {
