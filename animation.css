@@ -1,4 +1,21 @@
-canvas{
-	border-style: dotted;
-	color: grey;
+body {
+    padding: 10px 0px 20px 20px;
+}
+
+div {
+    display: inline-block;
+}
+
+h1 {
+    font-size: 20px;
+    font-family: Raleway;
+}
+
+canvas {
+    border-style: dotted;
+    color: grey;
+    background-color: #5f85a0;
+    background-image: url("background.jpg");
+    background-repeat: repeat-y;
+    background-position-y: -180px;
 }
